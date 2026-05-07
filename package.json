@@ -1,0 +1,478 @@
+{
+  "name": "cpp-docs",
+  "displayName": "C/C++ Documentation Viewer",
+  "description": "Offline cppreference documentation for VS Code: cursor-follow, hover snippets, symbol browser.",
+  "version": "0.1.0",
+  "publisher": "orlac",
+  "license": "MIT",
+  "icon": "media/icons/cpp-docs.png",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "cpp",
+    "c++",
+    "cppreference",
+    "docs",
+    "documentation",
+    "stdlib",
+    "hover"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vorlac/vscode-cpp-docs-extension"
+  },
+  "bugs": {
+    "url": "https://github.com/vorlac/vscode-cpp-docs-extension/issues"
+  },
+  "homepage": "https://github.com/vorlac/vscode-cpp-docs-extension#readme",
+  "galleryBanner": {
+    "color": "#1d334f",
+    "theme": "dark"
+  },
+  "main": "./dist/host/extension.js",
+  "activationEvents": [
+    "onLanguage:c",
+    "onLanguage:cpp",
+    "onLanguage:cuda-cpp",
+    "onLanguage:objective-c",
+    "onLanguage:objective-cpp",
+    "onWebviewPanel:cppDocs.viewer"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "cppDocsetsBrowser",
+          "title": "C/C++ Docset Browser",
+          "icon": "media/icons/cpp-docset-library.svg"
+        }
+      ],
+      "secondarySidebar": [
+        {
+          "id": "cppDocsViewerPanel",
+          "title": "C/C++ Docs",
+          "icon": "media/icons/cpp-docs-viewer.svg"
+        }
+      ]
+    },
+    "views": {
+      "cppDocsetsBrowser": [
+        {
+          "type": "webview",
+          "id": "cppDocs.searchView",
+          "name": "Search",
+          "when": "cppDocs.hasDocsets"
+        },
+        {
+          "id": "cppDocs.docsetTree",
+          "name": "C/C++ Docset Browser",
+          "contextualTitle": "C++ Docset Browser",
+          "when": "config.cppDocs.tree.enabled"
+        }
+      ],
+      "cppDocsViewerPanel": [
+        {
+          "id": "cppDocs.docPanel",
+          "name": "C/C++ Docs",
+          "type": "webview",
+          "contextualTitle": "C/C++ Docs",
+          "when": "cppDocs.location != 'editor'"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "cppDocs.docsetTree",
+        "contents": "No docsets installed.\n[Install cppreference](command:cppDocs.installCppreference)",
+        "when": "!cppDocs.hasDocsets"
+      },
+      {
+        "view": "cppDocs.docPanel",
+        "contents": "Open a C++ symbol's documentation.\n[Open Symbol…](command:cppDocs.openSymbol)",
+        "when": "cppDocs.hasDocsets"
+      },
+      {
+        "view": "cppDocs.docPanel",
+        "contents": "No docsets installed.\n[Install cppreference](command:cppDocs.installCppreference)",
+        "when": "!cppDocs.hasDocsets"
+      }
+    ],
+    "commands": [
+      {
+        "command": "cppDocs.openSymbol",
+        "title": "C++ Docs: Open Symbol…"
+      },
+      {
+        "command": "cppDocs.installCppreference",
+        "title": "C++ Docs: Install cppreference"
+      },
+      {
+        "command": "cppDocs.checkForUpdates",
+        "title": "C++ Docs: Check for Updates"
+      },
+      {
+        "command": "cppDocs.removeDocset",
+        "title": "C++ Docs: Remove Docset…"
+      },
+      {
+        "command": "cppDocs.setCppStandard",
+        "title": "C++ Docs: Set C++ Standard…"
+      },
+      {
+        "command": "cppDocs.back",
+        "title": "C++ Docs: Back"
+      },
+      {
+        "command": "cppDocs.forward",
+        "title": "C++ Docs: Forward"
+      },
+      {
+        "command": "cppDocs.tree.setFilter",
+        "title": "C++ Docs: Filter Tree…",
+        "icon": "$(filter)"
+      },
+      {
+        "command": "cppDocs.tree.clearFilter",
+        "title": "C++ Docs: Clear Tree Filter",
+        "icon": "$(filter-filled)"
+      },
+      {
+        "command": "cppDocs.openCurrentInBrowser",
+        "title": "C++ Docs: Open Current Page in Browser"
+      },
+      {
+        "command": "cppDocs.showOutput",
+        "title": "C++ Docs: Show Output Channel"
+      },
+      {
+        "command": "cppDocs.diagnose",
+        "title": "C++ Docs: Diagnose Symbol Under Cursor"
+      },
+      {
+        "command": "cppDocs.toggleDocPanel",
+        "title": "C++ Docs: Toggle Docs Panel"
+      },
+      {
+        "command": "cppDocs.moveToEditorTab",
+        "title": "C++ Docs: Move to Editor Tab",
+        "icon": "$(link-external)"
+      },
+      {
+        "command": "cppDocs.dockInSidebar",
+        "title": "C++ Docs: Dock in Side/Bottom Panel",
+        "icon": "$(layout-sidebar-left)"
+      },
+      {
+        "command": "cppDocs.openPageFromSearch",
+        "title": "C++ Docs: Open Page from Search"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "cppDocs.tree.setFilter",
+          "when": "view == cppDocs.docsetTree",
+          "group": "navigation@1"
+        },
+        {
+          "command": "cppDocs.tree.clearFilter",
+          "when": "view == cppDocs.docsetTree && cppDocs.treeFilterActive",
+          "group": "navigation@2"
+        },
+        {
+          "command": "cppDocs.moveToEditorTab",
+          "when": "view == cppDocs.docPanel",
+          "group": "navigation@1"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "cppDocs.dockInSidebar",
+          "when": "activeWebviewPanelId == cppDocs.viewer",
+          "group": "navigation@1"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "cppDocs.dockInSidebar",
+          "when": "activeWebviewPanelId == cppDocs.viewer",
+          "group": "1_close@10"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "cppDocs.moveToEditorTab",
+          "when": "cppDocs.location != 'editor'"
+        },
+        {
+          "command": "cppDocs.dockInSidebar",
+          "when": "cppDocs.location == 'editor'"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "C++ Docs",
+      "properties": {
+        "cppDocs.cppStandard": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "c++11",
+            "c++14",
+            "c++17",
+            "c++20",
+            "c++23",
+            "c++26"
+          ],
+          "enumDescriptions": [
+            "Resolve from C_Cpp.default.cppStandard, then compile_commands.json -std= flag, then cppDocs.cppStandard.fallback.",
+            "Show only C++11-and-earlier content.",
+            "Show only C++14-and-earlier content.",
+            "Show only C++17-and-earlier content.",
+            "Show only C++20-and-earlier content.",
+            "Show only C++23-and-earlier content.",
+            "Show only C++26-and-earlier content."
+          ],
+          "default": "auto",
+          "description": "C++ standard used to filter version-marked cppreference content. Filtering is CSS-only — toggling is live without re-render."
+        },
+        "cppDocs.cppStandard.fallback": {
+          "type": "string",
+          "enum": [
+            "c++11",
+            "c++14",
+            "c++17",
+            "c++20",
+            "c++23",
+            "c++26"
+          ],
+          "enumDescriptions": [
+            "Fall back to C++11 filtering.",
+            "Fall back to C++14 filtering.",
+            "Fall back to C++17 filtering.",
+            "Fall back to C++20 filtering.",
+            "Fall back to C++23 filtering.",
+            "Fall back to C++26 filtering."
+          ],
+          "default": "c++20",
+          "description": "Used when cppDocs.cppStandard is \"auto\" and neither the MS C/C++ extension setting nor compile_commands.json resolves a value."
+        },
+        "cppDocs.attribution.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the cppreference attribution footer at the bottom of every rendered page. The attribution markup is always emitted (legal compliance with CC BY-SA 3.0); this setting only toggles its visibility."
+        },
+        "cppDocs.tree.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the C++ Docs activity-bar tree view. Changing this requires a window reload to take effect."
+        },
+        "cppDocs.tree.revealPanelOnSelection": {
+          "type": "boolean",
+          "default": true,
+          "description": "When enabled, selecting an item in the C++ Docs tree view reveals the docs panel, unhiding it if collapsed. When disabled, tree selection navigates the docs panel only when it is already visible — a hidden panel stays hidden so focus and layout are not disturbed."
+        },
+        "cppDocs.panel.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Allow the C++ Docs documentation panel to be opened. When false, panel-opening commands are no-ops and cursor-follow updates are suppressed."
+        },
+        "cppDocs.panel.followCursor": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-update the documentation panel when the cursor moves to a resolvable C++ symbol."
+        },
+        "cppDocs.panel.followCursorDebounceMs": {
+          "type": "number",
+          "default": 150,
+          "minimum": 0,
+          "maximum": 5000,
+          "description": "Debounce in milliseconds between cursor moves and resolver lookups."
+        },
+        "cppDocs.panel.onMissBehavior": {
+          "type": "string",
+          "enum": [
+            "stay",
+            "showLink",
+            "clearPanel"
+          ],
+          "default": "showLink",
+          "enumDescriptions": [
+            "Leave the previous page visible.",
+            "Show a placeholder with a link to open the resolved name in the panel.",
+            "Clear the panel."
+          ],
+          "description": "What the panel does when the resolver produces an FQN that isn't in any installed docset."
+        },
+        "cppDocs.resolver.timeoutMs": {
+          "type": "number",
+          "default": 250,
+          "minimum": 50,
+          "maximum": 5000,
+          "description": "Per-strategy timeout for the resolver chain (clangd → hover → definition → fallback)."
+        },
+        "cppDocs.resolver.preferLanguageServer": {
+          "type": "boolean",
+          "default": true,
+          "description": "Try clangd's textDocument/symbolInfo first. Disable to skip straight to hover-text parsing."
+        },
+        "cppDocs.hover.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show cppreference snippets when hovering over C/C++ symbols. Clangd/MS C++'s hover content is unaffected."
+        },
+        "cppDocs.controls.showZoom": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the floating zoom −/+ controls in the docs panel."
+        },
+        "cppDocs.controls.showThemePicker": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the floating code-snippet theme picker in the docs panel."
+        },
+        "cppDocs.controls.showNavButtons": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the floating back / forward navigation buttons in the docs panel."
+        },
+        "cppDocs.docsetsRoot": {
+          "type": "string",
+          "default": "",
+          "description": "Override the directory where docsets are installed and indexed. Leave empty to use the extension's globalStorageUri/docsets directory (the default). Changing this requires a window reload to take effect."
+        },
+        "cppDocs.cppreference.version": {
+          "type": "string",
+          "default": "latest",
+          "description": "Pin a specific cppreference release tag (e.g. \"20250209\") or \"latest\" to always install the newest release from PeterFeicht/cppreference-doc on GitHub."
+        },
+        "cppDocs.cppreference.checkForUpdates": {
+          "type": "boolean",
+          "default": true,
+          "description": "Check the GitHub Releases API for newer cppreference versions on extension activation. When a newer release is detected, the status-bar item invites the user to update."
+        },
+        "cppDocs.theme.respectVSCodeTheme": {
+          "type": "boolean",
+          "default": true,
+          "description": "Bind the rendered cppreference page colors to VSCode's CSS variables so the docs match the active light, dark, or high-contrast theme. Disable to render with cppreference's stock palette."
+        },
+        "cppDocs.panel.zoomLevel": {
+          "type": "number",
+          "default": 1,
+          "minimum": 0.5,
+          "maximum": 3,
+          "description": "Zoom level for the C++ Docs documentation panel. 1.0 = 100%. Adjustable via the [−] and [+] buttons in the panel."
+        },
+        "cppDocs.codeTheme": {
+          "type": "string",
+          "default": "hybrid",
+          "enum": [
+            "hybrid",
+            "tomorrow-night",
+            "tomorrow-night-eighties",
+            "default-dark",
+            "dracula",
+            "nord",
+            "gruvbox-dark-medium",
+            "solarized-dark",
+            "one-dark",
+            "tokyo-night-dark",
+            "monokai",
+            "catppuccin-mocha",
+            "material-darker",
+            "ocean",
+            "ayu-mirage",
+            "default-light",
+            "tomorrow-light",
+            "solarized-light",
+            "gruvbox-light-medium",
+            "github-light",
+            "one-light",
+            "atelier-forest-light",
+            "material-lighter",
+            "cupcake",
+            "ayu-light",
+            "catppuccin-latte",
+            "mexico-light",
+            "ia-light",
+            "shapeshifter-light",
+            "unikitty-light"
+          ],
+          "enumDescriptions": [
+            "Hybrid (Tomorrow Night Bright derivative) — default.",
+            "Tomorrow Night.",
+            "Tomorrow Night Eighties.",
+            "Default Dark (base16 default).",
+            "Dracula.",
+            "Nord.",
+            "Gruvbox Dark Medium.",
+            "Solarized Dark.",
+            "One Dark (Atom).",
+            "Tokyo Night.",
+            "Monokai.",
+            "Catppuccin Mocha.",
+            "Material Darker.",
+            "Ocean.",
+            "Ayu Mirage.",
+            "Default Light (base16 default).",
+            "Tomorrow.",
+            "Solarized Light.",
+            "Gruvbox Light Medium.",
+            "GitHub Light.",
+            "One Light (Atom).",
+            "Atelier Forest Light.",
+            "Material Lighter.",
+            "Cupcake.",
+            "Ayu Light.",
+            "Catppuccin Latte.",
+            "Mexico Light.",
+            "iA Light.",
+            "Shapeshifter Light.",
+            "Unikitty Light."
+          ],
+          "description": "Color palette for code snippets in the C++ Docs panel. Pickable from the in-panel theme dropdown; live-swaps without re-render."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "rebuild:electron": "node -e \"console.log('lzma-native ships NAPI prebuilts (--electron-compat); no Electron-specific rebuild required.')\"",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.host.json && tsc --noEmit -p tsconfig.client.json && tsc --noEmit -p tsconfig.test.json",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "package": "npm run build && vsce package --out cpp-docs.vsix"
+  },
+  "dependencies": {
+    "@sqlite.org/sqlite-wasm": "^3.53.0-build1",
+    "highlight.js": "^11.11.1",
+    "htmlparser2": "^10.1.0",
+    "lzma-native": "^8.0.6",
+    "node-stream-zip": "^1.15.0",
+    "plist": "^3.1.0",
+    "saxes": "^6.0.0",
+    "tar": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/plist": "^3.0.5",
+    "@types/tar": "^6.1.0",
+    "@types/vscode": "^1.95.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.28.0",
+    "eslint": "^9.0.0",
+    "jszip": "^3.10.0",
+    "typescript": "^5.5.0",
+    "vitest": "^4.1.6"
+  }
+}

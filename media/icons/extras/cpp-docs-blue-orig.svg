@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128"
+     role="img" aria-labelledby="t-cpp-docs d-cpp-docs">
+  <title id="t-cpp-docs">cpp-docs — split-pane editor with C/C++ Docs reference</title>
+  <desc id="d-cpp-docs">Code editor that fills the canvas. Vertical divider at x=52 splits a narrow left pane of seven code lines (line 4 selected) from a wider right pane showing a flush C/C++ Docs header bar, the std::string identifier subtitle, a centered code-snippet box, and body rule-lines.</desc>
+
+  <!-- ============== EDITOR FRAME — fills 92% of canvas ============== -->
+  <rect x="4" y="4" width="120" height="120" rx="8"
+        fill="#1f242d" stroke="#9098a8" stroke-width="1.5" stroke-opacity="0.55"/>
+
+  <!-- ============== VERTICAL DIVIDER ============== -->
+  <line x1="52" y1="4" x2="52" y2="124"
+        stroke="#9098a8" stroke-width="1.5" stroke-opacity="0.55"/>
+
+  <!-- ============== LEFT PANE ============== -->
+  <!-- Selection highlight on line 4 -->
+  <rect x="6" y="54" width="44" height="8" rx="1" fill="#4a6fa5" opacity="0.4"/>
+
+  <!-- Seven mock code lines at original 10-unit spacing -->
+  <rect x="10" y="26" width="32" height="3" rx="1" fill="#83B2B6"/>
+  <rect x="10" y="36" width="26" height="3" rx="1" fill="#9AAF8B"/>
+  <rect x="10" y="46" width="36" height="3" rx="1" fill="#dfe2e8" opacity="0.65"/>
+  <rect x="10" y="57" width="28" height="3" rx="1" fill="#CAB880"/>
+  <rect x="10" y="66" width="34" height="3" rx="1" fill="#dfe2e8" opacity="0.65"/>
+  <rect x="10" y="76" width="22" height="3" rx="1" fill="#83B2B6" opacity="0.75"/>
+  <rect x="10" y="86" width="30" height="3" rx="1" fill="#9AAF8B" opacity="0.65"/>
+
+  <!-- ============== RIGHT PANE ============== -->
+  <!-- Header bar (height 18, ~15% of frame height — matches original ratio) -->
+  <path d="M52.75 4 L116 4 A8 8 0 0 1 124 12 L124 22 L52.75 22 Z" fill="#4a6fa5"/>
+  <text x="88" y="16" text-anchor="middle"
+        font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-weight="700" font-size="9" fill="#ffffff">C/C++ Docs</text>
+
+  <!-- std::string identifier subtitle -->
+  <!-- Split into 3 <text> elements (not tspans): macOS's CoreGraphics SVG rasterizer (used by sips/qlmanage) ignores tspan fills. Positions assume monospace advance = 0.6 * font-size. -->
+  <text x="58.3" y="34"
+        font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-weight="600" font-size="9" fill="#CAB880">std</text>
+  <text x="74.5" y="34"
+        font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-weight="600" font-size="9" fill="#b8c0cc">::</text>
+  <text x="85.3" y="34"
+        font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-weight="600" font-size="9" fill="#CAB880">string</text>
+
+  <!-- Snippet box -->
+  <rect x="58" y="42" width="62" height="40" rx="3"
+        fill="#262B33" stroke="#9098a8" stroke-width="0.85" stroke-opacity="0.55"/>
+  <!-- Snippet contents — 4-unit inset from box edge, 9-unit row spacing -->
+  <rect x="62" y="49" width="22" height="3" rx="1" fill="#83B2B6"/>
+  <rect x="62" y="58" width="34" height="3" rx="1" fill="#9AAF8B"/>
+  <rect x="62" y="67" width="26" height="3" rx="1" fill="#dfe2e8" opacity="0.6"/>
+  <rect x="62" y="76" width="18" height="3" rx="1" fill="#CAB880"/>
+
+  <!-- Body rule-lines — aligned to snippet box left edge -->
+  <rect x="58" y="92"  width="46" height="3" rx="1" fill="#dfe2e8" opacity="0.5"/>
+  <rect x="58" y="102" width="36" height="3" rx="1" fill="#dfe2e8" opacity="0.5"/>
+  <rect x="58" y="112" width="42" height="3" rx="1" fill="#dfe2e8" opacity="0.5"/>
+</svg>

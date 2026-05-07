@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128"
+     role="img" aria-labelledby="t-cpp-docs d-cpp-docs">
+  <title id="t-cpp-docs">cpp-docs — split-pane editor with C/C++ Docs reference (Sage)</title>
+  <desc id="d-cpp-docs">Code editor filling the canvas. A bold vertical divider splits a left pane of four thick code lines (one selected) from a right pane with a C/C++ Docs header bar (whose rounded top-right corner is concentric with the frame's inner edge), the std::string identifier, a code-snippet box, and body rule-lines. A strong neutral keyline keeps the tile legible on light and dark backgrounds.</desc>
+
+  <!-- EDITOR FRAME — strong keyline for light/dark contrast -->
+  <rect x="4" y="4" width="120" height="120" rx="12"
+        fill="#1f242d" stroke="#9aa3b3" stroke-width="2.5" stroke-opacity="0.9"/>
+
+  <!-- VERTICAL DIVIDER -->
+  <line x1="52" y1="6" x2="52" y2="122" stroke="#9aa3b3" stroke-width="2" stroke-opacity="0.8"/>
+
+  <!-- LEFT PANE — four code lines, line 3 selected -->
+  <rect x="6" y="59" width="44" height="11" rx="2.5" fill="#4a6fa5" opacity="0.45"/>
+  <rect x="10" y="30" width="34" height="5" rx="2.5" fill="#83B2B6"/>
+  <rect x="10" y="46" width="26" height="5" rx="2.5" fill="#9AAF8B"/>
+  <rect x="10" y="62" width="36" height="5" rx="2.5" fill="#CAB880"/>
+  <rect x="10" y="78" width="28" height="5" rx="2.5" fill="#83B2B6" opacity="0.8"/>
+
+  <!-- RIGHT PANE -->
+  <!-- Header bar — top-right corner concentric with the frame's inner outline edge -->
+  <path d="M53 5.25 H112 A10.75 10.75 0 0 1 122.75 16 L122.75 24 L53 24 Z" fill="#9AAF8B"/>
+  <text x="88" y="17.5" text-anchor="middle"
+        font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-weight="700" font-size="9.5" fill="#1f242d">C/C++ Docs</text>
+
+  <!-- std::string identifier subtitle -->
+  <!-- Split into 3 <text> elements (not tspans): macOS's CoreGraphics SVG rasterizer (used by sips/qlmanage) ignores tspan fills. Positions assume monospace advance = 0.6 * font-size. -->
+  <text x="58.3" y="38"
+        font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-weight="600" font-size="9" fill="#CAB880">std</text>
+  <text x="74.5" y="38"
+        font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-weight="600" font-size="9" fill="#b8c0cc">::</text>
+  <text x="85.3" y="38"
+        font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-weight="600" font-size="9" fill="#CAB880">string</text>
+
+  <!-- Snippet box -->
+  <rect x="58" y="46" width="62" height="38" rx="4"
+        fill="#262B33" stroke="#9aa3b3" stroke-width="1" stroke-opacity="0.6"/>
+  <rect x="62" y="54" width="22" height="4" rx="2" fill="#83B2B6"/>
+  <rect x="62" y="64" width="34" height="4" rx="2" fill="#9AAF8B"/>
+  <rect x="62" y="74" width="24" height="4" rx="2" fill="#CAB880"/>
+
+  <!-- Body rule-lines -->
+  <rect x="58" y="94"  width="46" height="4" rx="2" fill="#dfe2e8" opacity="0.55"/>
+  <rect x="58" y="106" width="36" height="4" rx="2" fill="#dfe2e8" opacity="0.55"/>
+</svg>
