@@ -459,7 +459,7 @@
     "node-stream-zip": "^1.15.0",
     "plist": "^3.1.0",
     "saxes": "^6.0.0",
-    "tar": "^7.0.0"
+    "tar": "^7.5.16"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
